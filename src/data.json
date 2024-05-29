@@ -1,0 +1,42 @@
+[
+    {
+        "id": 1,
+        "name": "libro",
+        "description": "libros de 50 hojas para colorear",
+        "price": "25000",
+        "imgUrl": "./imagenes/libro.png",
+        "quantity": 1
+    },
+    {
+        "id": 2,
+        "name": "cuaderno",
+        "description": "cuadernos rallados de 100 hojas",
+        "price": "5000",
+        "imgUrl": "./imagenes/descarga.jpg",
+        "quantity": 1
+    },
+    {
+        "id": 3,
+        "name": "lapiz",
+        "description": "lapiz 2h",
+        "price": "2500",
+        "imgUrl": "./imagenes/lapiz.jpg",
+        "quantity": 1
+    },
+    {
+        "id": 4,
+        "name": "lapicero",
+        "description": "lapiceros punta delgada",
+        "price": "4000",
+        "imgUrl": "./imagenes/lapicero.png",
+        "quantity": 1
+    },
+    {
+        "id": 5,
+        "name": "lapicero",
+        "description": "lapiceros punta delgada",
+        "price": "4000",
+        "imgUrl": "./imagenes/lapicero.png",
+        "quantity": 1
+    }
+]
