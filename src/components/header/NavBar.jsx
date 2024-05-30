@@ -14,6 +14,7 @@ export const NavBar = ({
   countProducts,
   setCountProducts,
 }) => {
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
       <Container>

@@ -5,7 +5,7 @@
         "description": "libros de 50 hojas para colorear",
         "price": "25000",
         "imgUrl": "./imagenes/libro.png",
-        "quantity": 1
+        "quantity": 2
     },
     {
         "id": 2,
