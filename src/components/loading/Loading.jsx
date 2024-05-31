@@ -1,26 +1,16 @@
-import React from 'react'
-import './loading.css'
+import React, { useEffect } from 'react';
+import './loading.css';
 
 export const Loading = () => {
-    return (
-        <div class="loader">
-            <div class="loader-inner">
-                <div class="loader-line-wrap">
-                    <div class="loader-line"></div>
-                </div>
-                <div class="loader-line-wrap">
-                    <div class="loader-line"></div>
-                </div>
-                <div class="loader-line-wrap">
-                    <div class="loader-line"></div>
-                </div>
-                <div class="loader-line-wrap">
-                    <div class="loader-line"></div>
-                </div>
-                <div class="loader-line-wrap">
-                    <div class="loader-line"></div>
-                </div>
-            </div>
-        </div>
-    )
-}
+  useEffect(() => {
+    /* Manipulación directa del DOM aquí */
+    const loader = document.querySelector('.loader');
+    const lineWrap = '<div class="loader-line-wrap"><div class="loader-line"></div></div>';
+    const img = '<div class="loader-inner">' + lineWrap.repeat(5) + '</div>';
+    loader.innerHTML = img;
+  }, []); // Solo se ejecuta una vez al montar el componente
+
+  return (
+    <div className="loader"></div>
+  );
+};
