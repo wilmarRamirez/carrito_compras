@@ -1,28 +1,21 @@
-import React, { useEffect, useState } from 'react'
-/* import  data  from '../../data'; */
+import React, { useContext, useEffect, useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import axios from 'axios';
-import { Await } from 'react-router-dom';
-import { Container } from 'react-bootstrap';
-import { CiTextAlignCenter } from 'react-icons/ci';
+import { Container, Row, Col } from 'react-bootstrap';
+import { CartContext } from '../../contexts/ShoppingCartContext';
+import { Loading } from '../loading/Loading';
 
-export const ProductList = ({
-  allProducts,
-  setAllProducts,
-  countProducts,
-  setCountProducts,
-  total,
-  setTotal,
-}) => {
+export const ProductList = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { allProducts, setAllProducts, total, setTotal, countProducts, setCountProducts } = useContext(CartContext);
 
   useEffect(() => {
-    const fechtProductos = async () => {
+    const fetchProductos = async () => {
       try {
-        const response = await axios.get("https://nexyapp-f3a65a020e2a.herokuapp.com/zoho/v1/console/Productos_Berry");
+        const response = await axios.get('https://nexyapp-f3a65a020e2a.herokuapp.com/zoho/v1/console/Productos_Berry');
         const modifiedProducts = response.data.map(product => ({
           ...product,
           quantity: 1
@@ -32,51 +25,57 @@ export const ProductList = ({
         setError('Error al obtener los productos');
         console.error('Error al obtener los productos:', error);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
     };
-    fechtProductos();
+
+    fetchProductos();
   }, []);
-  if (loading) return <p>Cargando...</p>;
+
+  if (loading) return <Loading />;
   if (error) return <p>{error}</p>;
+
   const onAddProduct = product => {
     if (allProducts.find(item => item.ID === product.ID)) {
-      const products = allProducts.map(item =>
+      const updatedProducts = allProducts.map(item =>
         item.ID === product.ID
           ? { ...item, quantity: item.quantity + 1 }
           : item
       );
 
-      setTotal(parseInt(total) + parseInt(product.Precio_detal));
+      setTotal(total + parseInt(product.Precio_detal));
       setCountProducts(countProducts + 1);
-      return setAllProducts([...products]);
+      setAllProducts(updatedProducts);
+      return;
     }
+
     setTotal(total + parseInt(product.Precio_detal) * parseInt(product.quantity));
     setCountProducts(countProducts + product.quantity);
     setAllProducts([...allProducts, product]);
   };
 
+  const renderProducts = () => {
+    return products.map((product) => (
+      <Col key={product.ID} xs={12} sm={6} md={4} lg={3} className="mb-4">
+        <Card style={{ width: '100%', height: '100%' }}>
+          <Card.Img variant="top" src={product.Imagen_publica.url} />
+          <Card.Body>
+            <Card.Title>{product.Referencia}</Card.Title>
+            <Card.Text>$ {product.Precio_detal}</Card.Text>
+            <Button variant="primary" onClick={() => onAddProduct(product)}>
+              Añadir al carrito
+            </Button>
+          </Card.Body>
+        </Card>
+      </Col>
+    ));
+  };
+
   return (
-    <div style={{ display: 'flex' }}>
-      {products && products.length > 0 && products.map((product, index) => (
-        <Container >
-          <Card style={{ width: '10rem', margin: '1rem', height:'20rem' }} key={product.ID}>
-            <Card.Img variant="top" src={product.Imagen_publica.url} />
-            <Card.Body>
-              <Card.Title>{product.Referencia}</Card.Title>
-              {/* <Card.Text>
-              {product.description}
-            </Card.Text> */}
-              <Card.Text>
-                $ {product.Precio_detal}
-              </Card.Text>
-              <Button variant="primary" onClick={() => onAddProduct(product)}>
-                Añadir al carrito
-              </Button>
-            </Card.Body>
-          </Card>
-        </Container>
-      ))}
-    </div>
-  )
-}
+    <Container>
+      <Row>
+        {products.length > 0 ? renderProducts() : <p>No hay productos disponibles.</p>}
+      </Row>
+    </Container>
+  );
+};
